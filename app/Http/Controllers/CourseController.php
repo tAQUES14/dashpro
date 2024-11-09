@@ -2,53 +2,76 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Course;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    //listar os cursos
+    
+    // Listar os cursos
     public function index(){
-        //carrega a view
-        return view ('courses.index');
-    }
 
-    
-    //visualizar os cursos
-    public function show(){
-        //carrega a view
-        return view ('courses.show');
-    }
+        // Recuperar os registros do banco dados
+        // $courses = Course::where('id', 1000)->get();
+        // $courses = Course::paginate(10);
+        $courses = Course::orderBy('name', 'ASC')->get();
 
+        // Carregar a VIEW
+        return view('courses.index', ['courses' => $courses]);
+        
+    }
     
-    //carregar o formulario Criar os cursos
+    // Visualizar o curso
+    public function show(Course $course){
+
+        // dd($request->course);
+        // $course = Course::where('id', $request->course)->first();
+
+        // Carregar a VIEW
+        return view('courses.show', ['course' => $course]);
+        
+    }
+    
+    // Carregar o formulário cadastrar novo curso
     public function create(){
-        //carrega a view
-        return view ('courses.create');
-    }
 
-    
-    //cadastrar no banco de dados o novo cuurso
-    public function store(){
-        dd("Cadastrar");
+        // Carregar a VIEW
+        return view('courses.create');
+        
     }
-
     
-    //Carregar o forms editar curso
+    // Cadastrar no banco de dados o novo curso
+    public function store(Request $request){
+
+        // Cadastrar no banco de dados na tabela cursos os valores de todos os campos
+        // dd($request->name);
+        Course::create([
+            'name' => $request->name
+        ]);
+        
+        // Redirecionar o usuário, enviar a mensagem de sucesso
+        return redirect()->route('courses.create')->with('success', 'Curso cadastrado com sucesso!');
+    }
+    
+    // Carregar o formulário editar curso
     public function edit(){
-        //carrega a view
-        return view ('courses.edit');
-    }
 
+        // Carregar a VIEW
+        return view('courses.edit');
+        
+    }
     
-    //Editar o curso no banco de dados
+    // Editar no banco de dados o curso
     public function update(){
 
-        dd("Editar");
+        dd("Editar no banco de dados o curso");
+        
     }
-
     
-    //Excluir o curso do banco de dados
+    // Excluir o curso do banco de dados
     public function destroy(){
-        dd("Ecluir");
+
+        dd("Excluir o curso do banco de dados");
+        
     }
 }

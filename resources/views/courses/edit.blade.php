@@ -1,9 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-<h2>Editar o Curso</h2>
+    <h2>Editar o Curso</h2>    
 
-<a href="{{ route('courses.index') }}"> Listar </a>
-
+    <a href="{{ route('courses.index') }}">Listar</a><br>
 @endsection
-
