@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CourseRequest;
 use App\Models\Course;
 use Illuminate\Http\Request;
 
@@ -41,37 +42,55 @@ class CourseController extends Controller
     }
     
     // Cadastrar no banco de dados o novo curso
-    public function store(Request $request){
+    public function store(CourseRequest $request){
+
+        // Validar o formulário
+        $request->validated();
 
         // Cadastrar no banco de dados na tabela cursos os valores de todos os campos
         // dd($request->name);
-        Course::create([
-            'name' => $request->name
+        $course = Course::create([
+            'name' => $request->name,
+            'price' => $request->price,
         ]);
         
         // Redirecionar o usuário, enviar a mensagem de sucesso
-        return redirect()->route('courses.create')->with('success', 'Curso cadastrado com sucesso!');
+        return redirect()->route('course.show', ['course' => $course->id])->with('success', 'Curso cadastrado com sucesso!');
     }
     
     // Carregar o formulário editar curso
-    public function edit(){
-
+    public function edit(Course $course){
+        
         // Carregar a VIEW
-        return view('courses.edit');
+        return view('courses.edit', ['course' => $course]);
         
     }
     
     // Editar no banco de dados o curso
-    public function update(){
+    public function update(CourseRequest $request, Course $course){        
 
-        dd("Editar no banco de dados o curso");
+        // Validar o formulário
+        $request->validated();
+
+        // Editar as informações do registro no banco de dados
+        $course->update([
+            'name' => $request->name,
+            'price' => $request->price,
+        ]);
+
+        // Redirecionar o usuário, enviar a mensagem de sucesso
+        return redirect()->route('course.show', ['course' => $course->id])->with('success', 'Curso editado com sucesso!');
         
     }
     
     // Excluir o curso do banco de dados
-    public function destroy(){
+    public function destroy(Course $course){
 
-        dd("Excluir o curso do banco de dados");
+        // Excluir o registro do banco de dados
+        $course->delete();
+
+        // Redirecionar o usuário, enviar a mensagem de sucesso
+        return redirect()->route('course.index')->with('success', 'Curso excluído com sucesso!');
         
     }
 }
