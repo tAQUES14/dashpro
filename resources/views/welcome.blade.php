@@ -4,12 +4,12 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        <title>Celke</title>
+        <title>DashPro</title>
 
     </head>
     <body>
 
-        <h1>Bem-vindo ao Laravel 11</h1>
+        <h1>Bem-vindo ao DashPro</h1>
 
         <a href="{{ route('course.index') }}">Listar</a>
 
