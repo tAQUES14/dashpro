@@ -26,7 +26,7 @@ class ClasseController extends Controller
         Log::info('Listar aulas.', ['course_id' => $course->id]);
 
         // Carregar a VIEW
-        return view('classes.index', ['course' => $course, 'classes' => $classes]);
+        return view('classes.index', ['menu' => 'courses', 'course' => $course, 'classes' => $classes]);
     }
 
     // Detalhes da aula
@@ -37,14 +37,14 @@ class ClasseController extends Controller
         Log::info('Visualizar a aula.', [ 'classe_id' => $classe->id]);
 
         // Carregar a VIEW
-        return view('classes.show', ['classe' => $classe]);
+        return view('classes.show', ['menu' => 'courses', 'classe' => $classe]);
     }
 
     // Carregar o formulário cadastrar nova aula
     public function create(Course $course)
     {
         // Carregar a VIEW
-        return view('classes.create', ['course' => $course]);
+        return view('classes.create', ['menu' => 'courses', 'course' => $course]);
     }
 
     // Cadastrar no banco de dados a nova aula
@@ -98,7 +98,7 @@ class ClasseController extends Controller
     {
 
         // Carregar a VIEW
-        return view('classes.edit', ['classe' => $classe]);
+        return view('classes.edit', ['menu' => 'courses', 'classe' => $classe]);
     }
 
     // Editar no banco de dados a aula

@@ -23,7 +23,7 @@ class CourseController extends Controller
         Log::info('Listar cursos.');
 
         // Carregar a VIEW
-        return view('courses.index', ['courses' => $courses]);
+        return view('courses.index', ['menu' => 'courses', 'courses' => $courses]);
     }
 
     // Visualizar o curso
@@ -37,7 +37,7 @@ class CourseController extends Controller
         Log::info('Visualizar o curso.', [ 'course_id' => $course->id]);
 
         // Carregar a VIEW
-        return view('courses.show', ['course' => $course]);
+        return view('courses.show', ['menu' => 'courses', 'course' => $course]);
     }
 
     // Carregar o formulário cadastrar novo curso
@@ -45,7 +45,7 @@ class CourseController extends Controller
     {
 
         // Carregar a VIEW
-        return view('courses.create');
+        return view('courses.create', ['menu' => 'courses']);
     }
 
     // Cadastrar no banco de dados o novo curso
@@ -92,7 +92,7 @@ class CourseController extends Controller
     {
 
         // Carregar a VIEW
-        return view('courses.edit', ['course' => $course]);
+        return view('courses.edit', ['menu' => 'courses', 'course' => $course]);
     }
 
     // Editar no banco de dados o curso

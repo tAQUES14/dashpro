@@ -19,7 +19,7 @@
             </ol>
         </div>
 
-        <div class="card mb-4">
+        <div class="card mb-4 border-light shadow">
 
             <div class="card-header hstack gap-2">
                 <span>Cadastrar</span>
