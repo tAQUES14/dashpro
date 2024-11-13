@@ -1,33 +1,69 @@
 @extends('layouts.admin')
 
 @section('content')
+    <div class="container-fluid px-4">
+        <div class="mb-1 hstack gap-2">
+            <h2 class="mt-3">Aula</h2>
 
-    <h2>Cadastrar Aula</h2>
+            <ol class="breadcrumb mb-3 mt-3 ms-auto">
+                <li class="breadcrumb-item">
+                    <a href="#" class="text-decoration-none">Dashboard</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('course.show', ['course' => $course->id]) }}" class="text-decoration-none">Curso</a>
+                </li>
+                <li class="breadcrumb-item">
+                    <a href="{{ route('classe.index', ['course' => $course->id]) }}" class="text-decoration-none">Aulas</a>
+                </li>
+                <li class="breadcrumb-item active">Aula</li>
+            </ol>
+        </div>
 
-    <a href="{{ route('classe.index', ['course' => $course->id]) }}">
-        <button type="button">Aulas</button>
-    </a><br><br>
+        <div class="card mb-4">
 
-    <x-alert />    
+            <div class="card-header hstack gap-2">
+                <span>Cadastrar</span>
 
-    {{-- Lorem ipsum dolor sit amet consectetur adipisicing elit. Perferendis suscipit magnam amet. Consequatur animi odio vitae dolorum asperiores cum exercitationem quo nam quaerat fugiat non vero mollitia, iste culpa aut! --}}
+                <span class="ms-auto d-sm-flex flex-row">
 
-    <form action="{{ route('classe.store') }}" method="POST">
-        @csrf
-        @method('POST')
+                    <a href="{{ route('classe.index', ['course' => $course->id]) }}" class="btn btn-info btn-sm me-1 mb-1 mb-sm-0">Aulas</a>
 
-        <input type="hidden" name="course_id" id="course_id" value="{{ $course->id }}">
-        
-        <label>Curso: </label>
-        <input type="text" name="name_course" id="name_course" value="{{ $course->name }}" disabled><br><br>
+                </span>
+            </div>
 
-        <label>Nome: </label>
-        <input type="text" name="name" id="name" placeholder="Nome da aula" value="{{ old('name') }}" required><br><br>
+            <div class="card-body">
 
-        <label>Descrição</label>
-        <textarea name="description" id="description" rows="4" cols="30" required>{{ old('description') }}</textarea><br><br>
+                <x-alert />
 
-        <button type="submit">Cadastrar</button>
+                <form class="row g-3" action="{{ route('classe.store') }}" method="POST">
+                    @csrf
+                    @method('POST')
 
-    </form>
+                    <input type="hidden" name="course_id" id="course_id" value="{{ $course->id }}">
+
+                    <div class="col-12">
+                      <label for="name_course" class="form-label">Nome</label>
+                      <input type="text" name="name_course" class="form-control" id="name_course" placeholder="Nome do curso" value="{{ $course->name }}" disabled required>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="name" class="form-label">Nome</label>
+                      <input type="text" name="name" class="form-control" id="name" placeholder="Nome da aula" value="{{ old('name') }}" required>
+                    </div>
+
+                    <div class="col-12">
+                      <label for="name" class="form-label">Descrição</label>
+                      <textarea name="description" rows="4" cols="30" id="description" class="form-control" required>{{ old('description') }}</textarea>
+                    </div>
+
+                    <div class="col-12">
+                      <button type="submit" class="btn btn-success btn-sm">Cadastrar</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
 @endsection
