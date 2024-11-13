@@ -6,10 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/styles_sbadmin.css') }}" rel="stylesheet">
-    <link href="{{ asset('css/styles_admin.css') }}" rel="stylesheet">
+    @vite(['resources/css/app.css','resources/js/app.js'])
+    <link rel="icon" href="{{ asset('favicon.ico') }}" type="image/x-icon">
 
+ 
     <link href="{{ asset('css/all.min.css') }}" rel="stylesheet">
 
     <title>DashPro</title>
@@ -50,7 +50,10 @@
                             Dashboard
                         </a>
 
-                        <a @class(['nav-link', 'active' => isset($menu) && $menu == 'courses']) href="{{ route('course.index') }}">
+                        <a @class(['nav-link', 'active' => isset($menu) && $menu == 'users']) href="{{ route('user.index') }}">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-users"></i></div>
+                            Usuários
+                        </a>                        <a @class(['nav-link', 'active' => isset($menu) && $menu == 'courses']) href="{{ route('course.index') }}">
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-chalkboard-user"></i></div>
                             Cursos
                         </a>
@@ -90,8 +93,6 @@
 
     </div>    
 
-    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-    <script src="{{ asset('js/scripts_sbadmin.js') }}"></script>
     <script src="{{ asset('js/all.min.js') }}"></script>
 
 </body>

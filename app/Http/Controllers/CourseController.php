@@ -16,7 +16,7 @@ class CourseController extends Controller
     {
 
         // Recuperar os registros do banco dados
-        $courses = Course::orderBy('name', 'ASC')      
+        $courses = Course::orderBy('name', 'ASC')
             ->paginate(2);
 
         // Salvar log
@@ -34,7 +34,7 @@ class CourseController extends Controller
         // $course = Course::where('id', $request->course)->first();
 
         // Salvar log
-        Log::info('Visualizar o curso.', [ 'course_id' => $course->id]);
+        Log::info('Visualizar o curso.', ['course_id' => $course->id]);
 
         // Carregar a VIEW
         return view('courses.show', ['menu' => 'courses', 'course' => $course]);
@@ -63,14 +63,14 @@ class CourseController extends Controller
             // Cadastrar no banco de dados na tabela cursos os valores de todos os campos
             $course = Course::create([
                 'name' => $request->name,
-                'price' => $request->price,
+                'price' => str_replace(',', '.', str_replace('.', '', $request->price)),
             ]);
 
             // Operação é concluída com êxito
             DB::commit();
 
             // Salvar log
-            Log::info('Curso cadastrado.', [ 'course_id' => $course->id]);
+            Log::info('Curso cadastrado.', ['course_id' => $course->id]);
 
             // Redirecionar o usuário, enviar a mensagem de sucesso
             return redirect()->route('course.show', ['course' => $course->id])->with('success', 'Curso cadastrado com sucesso!');
@@ -80,7 +80,7 @@ class CourseController extends Controller
             DB::rollBack();
 
             // Salvar log
-            Log::notice('Curso não cadastrado.', [ 'error' => $e->getMessage()]);
+            Log::notice('Curso não cadastrado.', ['error' => $e->getMessage()]);
 
             // Redirecionar o usuário, enviar a mensagem de erro
             return back()->withInput()->with('error', 'Curso não cadastrado!');
@@ -110,14 +110,14 @@ class CourseController extends Controller
             // Editar as informações do registro no banco de dados
             $course->update([
                 'name' => $request->name,
-                'price' => $request->price,
+                'price' => str_replace(',', '.', str_replace('.', '', $request->price)),
             ]);
 
             // Operação é concluída com êxito
             DB::commit();
 
             // Salvar log
-            Log::info('Curso editado.', [ 'course_id' => $course->id]);
+            Log::info('Curso editado.', ['course_id' => $course->id]);
 
             // Redirecionar o usuário, enviar a mensagem de sucesso
             return redirect()->route('course.show', ['course' => $course->id])->with('success', 'Curso editado com sucesso!');
@@ -127,7 +127,7 @@ class CourseController extends Controller
             DB::rollBack();
 
             // Salvar log
-            Log::notice('Curso não editado.', [ 'error' => $e->getMessage()]);
+            Log::notice('Curso não editado.', ['error' => $e->getMessage()]);
 
             // Redirecionar o usuário, enviar a mensagem de erro
             return back()->withInput()->with('error', 'Curso não editado!');
@@ -144,14 +144,14 @@ class CourseController extends Controller
             $course->delete();
 
             // Salvar log
-            Log::info('Curso apagado.', [ 'course_id' => $course->id]);
+            Log::info('Curso apagado.', ['course_id' => $course->id]);
 
             // Redirecionar o usuário, enviar a mensagem de sucesso
             return redirect()->route('course.index')->with('success', 'Curso apagado com sucesso!');
         } catch (Exception $e) {
 
             // Salvar log
-            Log::notice('Curso não apagado.', [ 'error' => $e->getMessage()]);
+            Log::notice('Curso não apagado.', ['error' => $e->getMessage()]);
 
             // Redirecionar o usuário, enviar a mensagem de sucesso
             return redirect()->route('course.index')->with('error', 'Curso não apagado!');

@@ -18,8 +18,8 @@ class ClasseSeeder extends Seeder
             Classe::create([
                 'name' => "Aula 1",
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt eveniet asperiores totam quas velit repellendus optio. Aliquid enim aspernatur asperiores soluta tempora ratione aliquam deserunt, consequatur quos voluptatibus. Repudiandae, iusto!',
-                'order_classe'=> 1,
-                'course_id' => 12,
+                'order_classe' => 1,
+                'course_id' => 1,
             ]);
         }
 
@@ -27,16 +27,16 @@ class ClasseSeeder extends Seeder
             Classe::create([
                 'name' => "Aula 2",
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt eveniet asperiores totam quas velit repellendus optio. Aliquid enim aspernatur asperiores soluta tempora ratione aliquam deserunt, consequatur quos voluptatibus. Repudiandae, iusto!',
-                'order_classe'=> 2,
-                'course_id' => 11,
+                'order_classe' => 2,
+                'course_id' => 1,
             ]);
         }
         if (!Classe::where('name', 'Aula 1B')->first()) {
             Classe::create([
                 'name' => "Aula 1B",
                 'description' => 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt eveniet asperiores totam quas velit repellendus optio. Aliquid enim aspernatur asperiores soluta tempora ratione aliquam deserunt, consequatur quos voluptatibus. Repudiandae, iusto!',
-                'order_classe'=> 1,
-                'course_id' => 13,
+                'order_classe' => 1,
+                'course_id' => 2,
             ]);
         }
     }

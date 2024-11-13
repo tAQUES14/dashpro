@@ -8,7 +8,9 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    
+    /**
+     * Seed the application's database.
+     */
     public function run(): void
     {
         // User::factory(10)->create();
@@ -20,7 +22,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             CourseSeeder::class,
-            ClasseSeeder::class
+            ClasseSeeder::class,
+            UserSeeder::class,
         ]);
+
     }
 }
