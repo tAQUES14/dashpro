@@ -58,14 +58,17 @@
                             Cursos
                         </a>
 
-                        <a class="nav-link" href="#">
+                        <a class="nav-link" href="{{ route('login.destroy') }}">
                             <div class="sb-nav-link-icon"><i class="fa-solid fa-arrow-right-from-bracket"></i></div>
                             Sair
                         </a>
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
-                    <div class="small">Logado: Cesar</div>
+                    <div class="small">Logado: 
+                        @if (auth()->check())
+                            {{ auth()->user()->name }}
+                        @endif
                 </div>
             </nav>
         </div>

@@ -13,36 +13,22 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        if (!User::where('email', 'cesar@celke.com.br')->first()) {
+        if (!User::where('email', 'marcostaques13@gmail.com')->first()) {
             User::create([
-                'name' => 'Cesar',
-                'email' => 'cesar@celke.com.br',
+                'name' => 'Marcos',
+                'email' => 'marcostaques13@celke.com',
                 'password' => Hash::make('123456a', ['rounds' => 12])
             ]);
         }
         
-        if (!User::where('email', 'kelly@celke.com.br')->first()) {
+        if (!User::where('email', 'carol@gmail.com')->first()) {
             User::create([
-                'name' => 'Kelly',
-                'email' => 'kelly@celke.com.br',
+                'name' => 'Carol',
+                'email' => 'carol@gmail.com',
                 'password' => Hash::make('123456a', ['rounds' => 12])
             ]);
         }
         
-        if (!User::where('email', 'jessica@celke.com.br')->first()) {
-            User::create([
-                'name' => 'Jessica',
-                'email' => 'jessica@celke.com.br',
-                'password' => Hash::make('123456a', ['rounds' => 12])
-            ]);
-        }
-        
-        if (!User::where('email', 'gabrielly@celke.com.br')->first()) {
-            User::create([
-                'name' => 'Gabrielly',
-                'email' => 'gabrielly@celke.com.br',
-                'password' => Hash::make('123456a', ['rounds' => 12])
-            ]);
-        }
+
     }
 }
