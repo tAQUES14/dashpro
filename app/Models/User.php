@@ -9,10 +9,12 @@ use Illuminate\Notifications\Notifiable;
 
 use \OwenIt\Auditing\Auditable as AuditingAuditable;
 use OwenIt\Auditing\Contracts\Auditable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable implements Auditable
 {
-    use HasFactory, Notifiable, AuditingAuditable;
+    use HasFactory, Notifiable, AuditingAuditable,  HasRoles;
+    
 
     /**
      * The attributes that are mass assignable.
@@ -45,6 +47,8 @@ class User extends Authenticatable implements Auditable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+
+            
         ];
     }
 }

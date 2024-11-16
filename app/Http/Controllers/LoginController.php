@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Spatie\Permission\Models\Permission;
 
 class LoginController extends Controller
 {
@@ -32,10 +33,31 @@ class LoginController extends Controller
 
         // Verificar se o usuário foi autenticado
         if(!$authenticated){
+
+            // Salvar log
+            Log::warning('E-mail ou senha inválido!', ['email' => $request->email]);
             
             // Redirecionar o usuário para página anterior "login", enviar a mensagem de erro
             return back()->withInput()->with('error', 'E-mail ou senha inválido!');
         }
+
+        // Obter o usuário autenticado
+        $user = Auth::user();
+        $user = User::find($user->id);
+
+        // Verificar se a permissões é Super Admin, tem acesso a todas as páginas
+        if($user->hasRole('Super Admin')){
+
+            // O usuário tem todas as permissões
+            $permissions = Permission::pluck('name')->toArray();
+        }else{
+
+            // Recuperar no banco de dados as permissões que o papel possui
+            $permissions = $user->getPermissionsViaRoles()->pluck('name')->toArray();
+        }
+
+        // Atribuir as permissões ao usuário
+        $user->syncPermissions($permissions);
 
         // Redirecionar o usuário
         return redirect()->route('dashboard.index');
@@ -78,7 +100,7 @@ class LoginController extends Controller
         } catch (Exception $e) {
 
             // Salvar log
-            Log::info('Usuário não cadastrado.', ['error' => $e->getMessage()]);
+            Log::warning('Usuário não cadastrado.', ['error' => $e->getMessage()]);
 
             // Operação não é concluída com êxito
             DB::rollBack();
