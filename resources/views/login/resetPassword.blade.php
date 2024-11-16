@@ -4,31 +4,38 @@
     <div class="col-lg-5">
         <div class="card shadow-lg border-0 rounded-lg mt-5">
             <div class="card-header">
-                <h3 class="text-center font-weight-light my-4">Área Restrita</h3>
+                <h3 class="text-center font-weight-light my-4">Nova Senha</h3>
             </div>
             <div class="card-body">
 
                 <x-alert />
 
-                <form action="{{ route('login.process') }}" method="POST">
+                <form action="{{ route('reset-password.submit') }}" method="POST">
                     @csrf
                     @method('POST')
 
+                    <input type="hidden" name="token" value="{{ $token }}">
+
                     <div class="form-floating mb-3">
                         <input type="email" name="email" class="form-control" id="email"
-                            placeholder="Digite o e-mail de usuário" value="{{ old('email') }}">
+                            placeholder="Seu e-mail cadastrado" value="{{ old('email') }}">
                         <label for="email">E-mail</label>
                     </div>
 
                     <div class="form-floating mb-3">
                         <input type="password" name="password" class="form-control" id="password"
-                            placeholder="Digite a senha">
-                        <label for="password">Senha</label>
+                            placeholder="Nova Senha">
+                        <label for="password">Nova Senha</label>
+                    </div>
+
+                    <div class="form-floating mb-3">
+                        <input type="password" name="password_confirmation" class="form-control" id="password_confirmation"
+                            placeholder="Confirmar a Nova Senha">
+                        <label for="password_confirmation">Confirmar a Nova Senha</label>
                     </div>
 
                     <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-                        <a href="{{ route('forgot-password.show') }}" class="small text-decoration-none">Esqueceu a senha?</a>
-                        <button type="submit" class="btn btn-primary btn-sm">Acessar</button>
+                        <button type="submit" class="btn btn-primary btn-sm" onclick="this.innerText = 'Atualizando...'">Atualizar</button>
                     </div>
 
                 </form>
@@ -36,12 +43,7 @@
 
             <div class="card-footer text-center py-3">
                 <div class="small">
-                    Precisa de uma conta? <a href="{{ route('login.create-user') }}" class="text-decoration-none">Inscrever-se!</a>
-                </div>
-
-                <div class="small">
-                    Usuário: cesar@celke.com.br<br>
-                    Senha: 123456a
+                    <a href="{{ route('login.index') }}" class="text-decoration-none">Clique aqui</a> para acessar.
                 </div>
             </div>
 
