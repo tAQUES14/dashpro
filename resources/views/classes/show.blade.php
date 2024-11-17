@@ -7,7 +7,7 @@
 
             <ol class="breadcrumb mb-3 mt-3 ms-auto">
                 <li class="breadcrumb-item">
-                    <a href="{{ route('user.index') }}" class="text-decoration-none">Dashboard</a>
+                    <a href="{{ route('dashboard.index') }}" class="text-decoration-none">Dashboard</a>
                 </li>
                 <li class="breadcrumb-item">
                     <a href="{{ route('course.show', ['course' => $classe->course_id]) }}" class="text-decoration-none">Curso</a>
@@ -20,27 +20,39 @@
         </div>
 
         <div class="card mb-4 border-light shadow">
-
             <div class="card-header hstack gap-2">
                 <span>Visualizar</span>
-
                 <span class="ms-auto d-sm-flex flex-row">
 
-                    <a href="{{ route('classe.index', ['course' => $classe->course_id]) }}" class="btn btn-info btn-sm me-1 mb-1 mb-sm-0">Aulas</a>
+                    {{-- Botão Aulas - Todos podem ver --}}
+                    <a href="{{ route('classe.index', ['course' => $classe->course_id]) }}" 
+                       class="btn btn-info btn-sm me-1 mb-1 mb-sm-0">
+                        <i class="fa-solid fa-list"></i> Aulas
+                    </a>
 
-                    <a href="{{ route('classe.edit', ['classe' => $classe->id]) }}" class="btn btn-warning btn-sm me-1 mb-1 mb-sm-0">Editar</a>
+                    {{-- Botão Editar - Apenas Professores, Admins e Super Admins --}}
+                    @if(auth()->user()->hasRole(['Professor', 'Admin', 'Super Admin']))
+                        <a href="{{ route('classe.edit', ['classe' => $classe->id]) }}" 
+                           class="btn btn-warning btn-sm me-1 mb-1 mb-sm-0">
+                            <i class="fa-solid fa-pen-to-square"></i> Editar
+                        </a>
+                    @endif
 
-                    <form action="{{ route('classe.destroy', ['classe' => $classe->id])}}" method="POST">
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja apagar este registro?')">Apagar</button>
-                    </form>
-
+                    {{-- Botão Apagar - Apenas Admins e Super Admins --}}
+                    @if(auth()->user()->hasRole(['Admin', 'Super Admin']))
+                        <form action="{{ route('classe.destroy', ['classe' => $classe->id]) }}" method="POST">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn btn-danger btn-sm me-1 mb-1 mb-sm-0"
+                                onclick="return confirm('Tem certeza que deseja apagar esta aula?')">
+                                <i class="fa-regular fa-trash-can"></i> Apagar
+                            </button>
+                        </form>
+                    @endif
                 </span>
             </div>
 
             <div class="card-body">
-
                 <x-alert />
 
                 <dl class="row">
@@ -60,15 +72,16 @@
                     <dd class="col-sm-9">{{ $classe->course->name }}</dd>
 
                     <dt class="col-sm-3">Cadastrado</dt>
-                    <dd class="col-sm-9">{{ \Carbon\Carbon::parse($classe->created_at)->format('d/m/Y H:i:s') }}</dd>
+                    <dd class="col-sm-9">
+                        {{ \Carbon\Carbon::parse($classe->created_at)->format('d/m/Y H:i:s') }}
+                    </dd>
 
                     <dt class="col-sm-3">Editado</dt>
-                    <dd class="col-sm-9">{{ \Carbon\Carbon::parse($classe->updated_at)->format('d/m/Y H:i:s') }}</dd>
-
+                    <dd class="col-sm-9">
+                        {{ \Carbon\Carbon::parse($classe->updated_at)->format('d/m/Y H:i:s') }}
+                    </dd>
                 </dl>
-
             </div>
         </div>
-
     </div>
 @endsection

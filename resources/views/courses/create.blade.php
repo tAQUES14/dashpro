@@ -22,9 +22,7 @@
                 <span>Cadastrar</span>
 
                 <span class="ms-auto d-sm-flex flex-row">
-
                     <a href="{{ route('course.index') }}" class="btn btn-info btn-sm me-1 mb-1 mb-sm-0">Listar</a>
-
                 </span>
             </div>
 
@@ -32,25 +30,33 @@
 
                 <x-alert />
 
-                <form class="row g-3" action="{{ route('course.store') }}" method="POST">
-                    @csrf
-                    @method('POST')
+                @can('create-course') {{-- Apenas usuários com permissão "create-course" podem acessar o formulário --}}
+                    <form class="row g-3" action="{{ route('course.store') }}" method="POST">
+                        @csrf
+                        @method('POST')
 
-                    <div class="col-12">
-                      <label for="name" class="form-label">Nome</label>
-                      <input type="text" name="name" class="form-control" id="name" placeholder="Nome do curso" value="{{ old('name') }}" required>
+                        <div class="col-12">
+                            <label for="name" class="form-label">Nome</label>
+                            <input type="text" name="name" class="form-control" id="name"
+                                   placeholder="Nome do curso" value="{{ old('name') }}" required>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="price" class="form-label">Preço</label>
+                            <input type="text" name="price" class="form-control" id="price"
+                                   placeholder="Preço do curso: 2.47. Usar '.' separar real do centavo"
+                                   value="{{ old('price') }}" required>
+                        </div>
+
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-success btn-sm">Cadastrar</button>
+                        </div>
+                    </form>
+                @else
+                    <div class="alert alert-warning">
+                        Você não tem permissão para cadastrar cursos.
                     </div>
-
-                    <div class="col-12">
-                      <label for="price" class="form-label">Preço</label>
-                      <input type="text" name="price" class="form-control" id="price" placeholder="Preço do curso: 2.47. Usar '.' separar real do centavo" value="{{ old('price') }}" required>
-                    </div>
-
-                    <div class="col-12">
-                      <button type="submit" class="btn btn-success btn-sm">Cadastrar</button>
-                    </div>
-
-                </form>
+                @endcan
 
             </div>
         </div>

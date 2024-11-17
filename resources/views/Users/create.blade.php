@@ -48,7 +48,20 @@
                     </div>
 
                     <div class="col-12">
-                        <button type="submit" class="btn btn-success btn-sm">Cadastrar</button>
+                        <label for="roles" class="form-label">Papel: </label>
+                        <select name="roles" class="form-select" id="roles">
+                            <option value="">Selecione</option>
+                            @forelse ($roles as $role)
+                                @if ($role != 'Super Admin')
+                                    <option {{ old('roles') == $role ? 'selected' : '' }} value="{{ $role }}">{{ $role }}</option>
+                                @else
+                                    @if (Auth::user()->hasRole('Super Admin'))
+                                        <option {{ old('roles') == $role ? 'selected' : '' }} value="{{ $role }}">{{ $role }}</option>
+                                    @endif
+                                @endif
+                            @empty
+                            @endforelse
+                        </select>
                     </div>
 
                 </form>

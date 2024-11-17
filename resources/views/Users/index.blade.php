@@ -16,8 +16,12 @@
             <div class="card-header hstack gap-2">
                 <span>Listar</span>
                 <span class="ms-auto">
-                    <a href="{{ route('user.create') }}" class="btn btn-success btn-sm"><i
-                            class="fa-regular fa-square-plus"></i> Cadastrar</a>
+                    {{-- Apenas quem pode criar usuários verá este botão --}}
+                    @can('create-user')
+                        <a href="{{ route('user.create') }}" class="btn btn-success btn-sm">
+                            <i class="fa-regular fa-square-plus"></i> Cadastrar
+                        </a>
+                    @endcan
                 </span>
             </div>
             <div class="card-body">
@@ -34,7 +38,6 @@
                         </tr>
                     </thead>
                     <tbody>
-
                         @forelse ($users as $user)
                             <tr>
                                 <th>{{ $user->id }}</th>
@@ -42,34 +45,41 @@
                                 <td class="d-none d-md-table-cell">{{ $user->email }}</td>
                                 <td class="d-md-flex flex-row justify-content-center">
 
+                                    {{-- Botão de Visualizar - Todos podem visualizar --}}
                                     <a href="{{ route('user.show', ['user' => $user->id]) }}"
                                         class="btn btn-primary btn-sm me-1 mb-1">
                                         <i class="fa-regular fa-eye"></i> Visualizar
                                     </a>
 
-                                    <a href="{{ route('user.edit', ['user' => $user->id]) }}"
-                                        class="btn btn-warning btn-sm me-1 mb-1">
-                                        <i class="fa-solid fa-pen-to-square"></i> Editar
-                                    </a>
+                                    {{-- Botão de Editar - Professores, Admins e Super Admins --}}
+                                    @if(auth()->user()->hasRole(['Professor', 'Admin', 'Super Admin']))
+                                        <a href="{{ route('user.edit', ['user' => $user->id]) }}"
+                                            class="btn btn-warning btn-sm me-1 mb-1">
+                                            <i class="fa-solid fa-pen-to-square"></i> Editar
+                                        </a>
+                                    @endif
 
-                                    <form method="POST" action="{{ route('user.destroy', ['user' => $user->id]) }}">
-                                        @csrf
-                                        @method('delete')
-                                        <button type="submit" class="btn btn-danger btn-sm me-1 mb-1"
-                                            onclick="return confirm('Tem certeza que deseja apagar este registro?')"><i
-                                                class="fa-regular fa-trash-can"></i> Apagar</button>
-                                    </form>
+                                    {{-- Botão de Apagar - Apenas Admins e Super Admins --}}
+                                    @if(auth()->user()->hasRole(['Admin', 'Super Admin']))
+                                        <form method="POST" action="{{ route('user.destroy', ['user' => $user->id]) }}">
+                                            @csrf
+                                            @method('delete')
+                                            <button type="submit" class="btn btn-danger btn-sm me-1 mb-1"
+                                                onclick="return confirm('Tem certeza que deseja apagar este registro?')">
+                                                <i class="fa-regular fa-trash-can"></i> Apagar
+                                            </button>
+                                        </form>
+                                    @endif
 
                                 </td>
                             </tr>
                         @empty
                             <div class="alert alert-danger" role="alert">Nenhum usuário encontrado!</div>
                         @endforelse
-
                     </tbody>
                 </table>
 
-                    {{ $users->onEachSide(0)->links() }}
+                {{-- Paginação --}}
 
             </div>
         </div>

@@ -19,24 +19,32 @@
                 <span>Visualizar</span>
 
                 <span class="ms-auto d-sm-flex flex-row">
+                    {{-- Permissão para visualizar aulas --}}
+                    @can('view-classe')
+                        <a href="{{ route('classe.index', ['course' => $course->id]) }}" class="btn btn-info btn-sm me-1 mb-1 mb-sm-0">Aulas</a>
+                    @endcan
 
-                    <a href="{{ route('classe.index', ['course' => $course->id]) }}" class="btn btn-info btn-sm me-1 mb-1 mb-sm-0">Aulas</a>
-
+                    {{-- Permissão para listar cursos --}}
                     <a href="{{ route('course.index') }}" class="btn btn-info btn-sm me-1 mb-1 mb-sm-0">Listar</a>
 
-                    <a href="{{ route('course.edit', ['course' => $course->id]) }}" class="btn btn-warning btn-sm me-1 mb-1 mb-sm-0">Editar</a>
+                    {{-- Permissão para editar curso --}}
+                    @can('edit-course')
+                        <a href="{{ route('course.edit', ['course' => $course->id]) }}" class="btn btn-warning btn-sm me-1 mb-1 mb-sm-0">Editar</a>
+                    @endcan
 
-                    <form action="{{ route('course.destroy', ['course' => $course->id]) }}" method="POST">
-                        @csrf
-                        @method('delete')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Tem certeza que deseja apagar este registro?')">Apagar</button>
-                    </form>
-
+                    {{-- Permissão para apagar curso --}}
+                    @can('destroy-course')
+                        <form action="{{ route('course.destroy', ['course' => $course->id]) }}" method="POST">
+                            @csrf
+                            @method('delete')
+                            <button type="submit" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Tem certeza que deseja apagar este registro?')">Apagar</button>
+                        </form>
+                    @endcan
                 </span>
             </div>
 
             <div class="card-body">
-
                 <x-alert />
 
                 <dl class="row">
@@ -54,7 +62,6 @@
 
                     <dt class="col-sm-3">Editado: </dt>
                     <dd class="col-sm-9">{{ \Carbon\Carbon::parse($course->updated_at)->format('d/m/Y H:i:s') }}</dd>
-
                 </dl>
 
             </div>

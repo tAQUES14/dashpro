@@ -2,71 +2,84 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
-        
-        if(!Role::where('name', 'Super Admin')->first()){
-            Role::create([
-                'name' => 'Super Admin',
-            ]);
-        }
-        
-        if(!Role::where('name', 'Admin')->first()){
-            $admin = Role::create([
-                'name' => 'Admin',
-            ]);
+        // Criando permissões
+        $permissions = [
+            'index-user',
+            'show-user',
+            'create-user',
+            'edit-user',
+            'edit-user-password',
+            'destroy-user',
 
-            // Dar permissão para o papel
-            $admin->givePermissionTo([
-                'index-course',
-                'show-course',
-                'create-course',
-                'edit-course',
-                'destroy-course',
-            ]);
-        }
-        
-        if(!Role::where('name', 'Professor')->first()){
-            $teacher = Role::create([
-                'name' => 'Professor',
-            ]);
+            'index-course',
+            'show-course',
+            'create-course',
+            'edit-course',
+            'destroy-course',
 
-            // Dar permissão para o papel
-            $teacher->givePermissionTo([
-                'index-course',
-                'show-course',
-                'create-course',
-                'edit-course',
-                'destroy-course',
-            ]);
-        }
-        
-        if(!Role::where('name', 'Tutor')->first()){
-            $tutor = Role::create([
-                'name' => 'Tutor',
-            ]);
+            'index-classe',
+            'show-classe',
+            'create-classe',
+            'edit-classe',
+            'destroy-classe',
+        ];
 
-            // Dar permissão para o papel
-            $tutor->givePermissionTo([
-                'index-course',
-                'show-course',
-                'edit-course',
-            ]);
+        foreach ($permissions as $permission) {
+            Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
         }
-        
-        if(!Role::where('name', 'Aluno')->first()){
-            Role::create([
-                'name' => 'Aluno',
-            ]);
-        }
+
+        // Criando papéis e associando permissões
+        $adminRole = Role::firstOrCreate(['name' => 'Admin', 'guard_name' => 'web']);
+        $professorRole = Role::firstOrCreate(['name' => 'Professor', 'guard_name' => 'web']);
+        $superAdminRole = Role::firstOrCreate(['name' => 'Super Admin', 'guard_name' => 'web']);
+
+        // Associando permissões aos papéis
+        $adminPermissions = [
+            'index-user',
+            'show-user',
+            'create-user',
+            'edit-user',
+            'edit-user-password',
+            'destroy-user',
+            'index-course',
+            'show-course',
+            'create-course',
+            'edit-course',
+            'destroy-course',
+            'index-classe',
+            'show-classe',
+            'create-classe',
+            'edit-classe',
+            'destroy-classe',
+        ];
+
+        // O professor pode visualizar e gerenciar cursos e aulas, mas não pode gerenciar usuários
+        $professorPermissions = [
+            'index-course',
+            'show-course',
+            'create-course',
+            'edit-course',
+            'destroy-course',
+            'index-classe',
+            'show-classe',
+            'create-classe',
+            'edit-classe',
+            'destroy-classe',
+        ];
+
+        $superAdminPermissions = $permissions; // SuperAdmin tem todas as permissões
+
+        // Associando as permissões aos papéis
+        $adminRole->syncPermissions($adminPermissions);
+        $professorRole->syncPermissions($professorPermissions);
+        $superAdminRole->syncPermissions($superAdminPermissions);
     }
 }

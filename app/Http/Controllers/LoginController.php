@@ -79,6 +79,8 @@ class LoginController extends Controller
         // Marca o ponto inicial de uma transação
         DB::beginTransaction();
 
+        
+
         try {
 
             // Cadastrar no banco de dados na tabela usuários
@@ -87,6 +89,9 @@ class LoginController extends Controller
                 'email' => $request->email,
                 'password' => $request->password,
             ]);
+
+            // Cadastrar papel para o usuário
+            $user->assignRole("Aluno");
 
             // Salvar log
             Log::info('Usuário cadastrado.', ['id' => $user->id]);
