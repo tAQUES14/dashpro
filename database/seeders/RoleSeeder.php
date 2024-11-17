@@ -30,16 +30,20 @@ class RoleSeeder extends Seeder
             'create-classe',
             'edit-classe',
             'destroy-classe',
+
+             'index-role',
         ];
 
+        // Criando as permissões se não existirem
         foreach ($permissions as $permission) {
             Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'web']);
         }
 
-        // Criando papéis e associando permissões
+        // Criando os papéis
         $adminRole = Role::firstOrCreate(['name' => 'Admin', 'guard_name' => 'web']);
         $professorRole = Role::firstOrCreate(['name' => 'Professor', 'guard_name' => 'web']);
         $superAdminRole = Role::firstOrCreate(['name' => 'Super Admin', 'guard_name' => 'web']);
+        $tutorRole = Role::firstOrCreate(['name' => 'Tutor', 'guard_name' => 'web']);  // Criando o papel Tutor
 
         // Associando permissões aos papéis
         $adminPermissions = [
@@ -59,9 +63,9 @@ class RoleSeeder extends Seeder
             'create-classe',
             'edit-classe',
             'destroy-classe',
+            'index-role',
         ];
 
-        // O professor pode visualizar e gerenciar cursos e aulas, mas não pode gerenciar usuários
         $professorPermissions = [
             'index-course',
             'show-course',
@@ -77,9 +81,23 @@ class RoleSeeder extends Seeder
 
         $superAdminPermissions = $permissions; // SuperAdmin tem todas as permissões
 
-        // Associando as permissões aos papéis
+        $tutorPermissions = [
+            'index-course',
+            'show-course',
+            'create-course',
+            'edit-course',
+            'destroy-course',
+            'index-classe',
+            'show-classe',
+            'create-classe',
+            'edit-classe',
+            'destroy-classe',
+        ];
+
+        // Sincronizando as permissões com os papéis
         $adminRole->syncPermissions($adminPermissions);
         $professorRole->syncPermissions($professorPermissions);
         $superAdminRole->syncPermissions($superAdminPermissions);
+        $tutorRole->syncPermissions($tutorPermissions);  // Associando permissões ao papel Tutor
     }
 }

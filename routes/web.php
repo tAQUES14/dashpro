@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -63,7 +64,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('/edit-course/{course}', [CourseController::class, 'edit'])->name('course.edit');
     });
 
-    Route::group(['middleware' => 'role:Super Admin|Admin|Professor'], function () {
+    Route::group(['middleware' => 'role:Super Admin|Admin|Professor|Tutor'], function () {
         Route::get('/create-course', [CourseController::class, 'create'])->name('course.create');
         Route::post('/store-course', [CourseController::class, 'store'])->name('course.store');
         Route::put('/update-course/{course}', [CourseController::class, 'update'])->name('course.update');
@@ -81,4 +82,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('/destroy-classe/{classe}', [ClasseController::class, 'destroy'])->name('classe.destroy');
     });
 
-});
+        // Papéis
+        Route::get('/index-role', [RoleController::class, 'index'])->name('role.index')->middleware('permission:index-role'); 
+        Route::get('/create-role', [RoleController::class, 'create'])->name('role.create')->middleware('permission:create-role'); 
+        Route::post('/store-role', [RoleController::class, 'store'])->name('role.store')->middleware('permission:create-role'); 
+        Route::get('/edit-role/{role}', [RoleController::class, 'edit'])->name('role.edit')->middleware('permission:edit-role'); 
+        Route::put('/update-role/{role}', [RoleController::class, 'update'])->name('role.update')->middleware('permission:edit-role'); 
+        Route::delete('/destroy-role/{role}', [RoleController::class, 'destroy'])->name('role.destroy')->middleware('permission:destroy-role'); 
+    });
+
